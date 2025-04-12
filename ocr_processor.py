@@ -2,6 +2,11 @@ import pytesseract
 from PIL import Image
 import io
 
+def procesar_imagen(imagen_bytes):
+    imagen = Image.open(io.BytesIO(imagen_bytes))
+    texto = pytesseract.image_to_string(imagen)
+    return extraer_datos_texto(texto)
+
 def extraer_datos_texto(texto):
     lineas = texto.split("\n")
     datos = {
@@ -20,8 +25,3 @@ def extraer_datos_texto(texto):
         elif "Restaurante" in linea:
             datos["nombre_restaurante"] = linea.replace("Restaurante", "").strip()
     return datos
-
-def procesar_imagen(imagen_bytes):
-    imagen = Image.open(io.BytesIO(imagen_bytes))
-    texto = pytesseract.image_to_string(imagen)
-    return extraer_datos_texto(texto)
